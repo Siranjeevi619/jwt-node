@@ -1,22 +1,23 @@
 import React from "react";
-import { Route, Routes } from "react-router-dom";
-import HomePage from "../pages/homepage/HomePage";
-import LoginPage from "../pages/login/LoginPage";
-import SignInPage from "../pages/signup/SignInPage";
-import PageNotFound from "../components/PageNotFound";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
 import Navbar from "../components/Navbar";
+import HomePage from "../pages/home/HomePage";
+import SignInPage from "../pages/signin/SignInPage";
+import LoginPage from "../pages/login/LoginPage";
 
 function AppNavigation() {
   return (
-    <div>
+    <>
       <Navbar />
-      <Routes>
-        <Route path="/" exact element={<HomePage />}></Route>
-        <Route path="/loginpage" element={<LoginPage />}></Route>
-        <Route path="/signinpage" exact element={<SignInPage />}></Route>
-        <Route path="*" exact element={<PageNotFound />}></Route>
-      </Routes>
-    </div>
+      <>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/signup" element={<SignInPage />} />
+          <Route path="/login" element={<LoginPage />} />
+        </Routes>
+      </>
+    </>
   );
 }
 

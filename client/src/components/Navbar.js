@@ -1,13 +1,13 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom"; 
 
-function Navbar() {
+const Navbar = () => {
   return (
-    <nav className="navbar navbar-expand-lg bg-dark">
-      <div className="container-fluid">
-        <a className="navbar-brand text-white fs-3" href="#">
-          Node Auth
-        </a>
+    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+      <div className="container">
+        <Link className="navbar-brand" to="/">
+          Rise And Shine
+        </Link>
         <button
           className="navbar-toggler"
           type="button"
@@ -20,27 +20,27 @@ function Navbar() {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navbarNav">
-          <ul className="navbar-nav ms-5">
+          <ul className="navbar-nav">
             <li className="nav-item">
-              <NavLink className="nav-link text-white" to="/">
+              <Link className="nav-link active" aria-current="page" to="/">
                 Home
-              </NavLink>
+              </Link>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link text-white" to="/loginpage">
+              <Link className="nav-link" to="/login">
                 Login
-              </NavLink>
+              </Link>
             </li>
             <li className="nav-item">
-              <NavLink className="nav-link text-white" to="/signinpage">
-                Sign In
-              </NavLink>
+              <Link className="nav-link" to="/signup">
+                Signup
+              </Link>
             </li>
           </ul>
         </div>
       </div>
     </nav>
   );
-}
+};
 
 export default Navbar;
