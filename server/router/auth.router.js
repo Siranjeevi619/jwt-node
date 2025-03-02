@@ -5,7 +5,7 @@ const router = express.Router();
 
 router.post("/signinpage", signinpage);
 
-//login
+
 
 router.post("/loginpage", loginpage);
 

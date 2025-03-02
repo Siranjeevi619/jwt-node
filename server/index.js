@@ -13,9 +13,7 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/auth", router);
 
-app.get("/", (req, res) => {
-  res.status(200).json({ message: "hello steve" });
-});
+
 
 app.listen(PORT, () => {
   console.log(`Server is currently running on port ${PORT}`);
