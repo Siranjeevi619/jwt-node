@@ -25,7 +25,7 @@ const Signup = () => {
     }
 
     try {
-      const res = await axios.post("http://localhost:8000/auth/signinpage", {
+      const res = await axios.post("http://localhost:7000/auth/signup", {
         name: formData.username,
         email: formData.email,
         phone: formData.phoneNumber,
@@ -126,7 +126,7 @@ const Signup = () => {
           </div>
         </form>
         <p className="text-center mt-2">
-          Already have an account? <a href="#">Login</a>
+          Already have an account? <a href="/login">Login</a>
         </p>
       </div>
     </div>

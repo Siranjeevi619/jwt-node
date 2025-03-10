@@ -1,30 +1,19 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext } from "react";
+import { UserContext } from "../context/UserContext";
 
 const Home = () => {
-  const [name, setName] = useState("unknown");
-
-  useEffect(() => {
-    fetch("http://localhost:8000/", {
-      method: "GET",
-    })
-      .then((response) => {
-        if (response.status !== 200) {
-          throw new Error("Network response is not ok");
-        }
-        return response.json();
-      })
-      .then((data) => {
-        setName(data.message);
-      })
-      .catch((error) => {
-        console.error("Fetch error:", error.message);
-      });
-  }, []);
+  const { user, logout } = useContext(UserContext);
 
   return (
     <div className="container text-center">
-      <h1>Welcome, {name}</h1>
+      <h1>Welcome, {user?.data || "Guest"}</h1>
       <p>This is the home page of the application.</p>
+
+      <>
+        <button className="btn btn-primary" onClick={logout}>
+          Log out
+        </button>
+      </>
     </div>
   );
 };

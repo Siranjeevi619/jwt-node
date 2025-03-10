@@ -6,7 +6,7 @@ dotenv.config();
 const connectDB = async () => {
   try {
     await mongoose
-      .connect("mongodb://localhost:27017/jwt-auth-system", {
+      .connect(process.env.DATA_BASE, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
       })
