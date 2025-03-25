@@ -8,40 +8,29 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const [token, setToken] = useState(localStorage.getItem("token") || "");
-  const [userData, setUserData] = useState(null);
-  const nav = useNavigate();
   const { login } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError(null);
+
     if (!email || !password) {
       setError("Please fill in all fields");
       return;
     }
 
     try {
-      const response = await axios.post("http://localhost:7000/api/login", {
+      const response = await axios.post("http://localhost:7000/api/signin", {
         email,
         password,
-      },{
-       
       });
 
-      if (response.data.token) {
-        setToken(response.data.token);
-        localStorage.setItem("token", response.data.token);
-        setError(null);
-        console.log(response.data);
+      if (response.data) {
+        login(response.data);
         console.log("Login successful!");
-        
-        const data = {
-          data: response.data.user,
-          token: response.data.token,
-        };
-        login(data);
       } else {
-        setError(response.data.message || "Login failed");
+        setError("Login failed. Please try again.");
       }
     } catch (error) {
       setError(error.response?.data?.message || "An error occurred");

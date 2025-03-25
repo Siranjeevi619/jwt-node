@@ -1,43 +1,47 @@
-const userModel = require("../model/userModel");
-
+const User = require("../model/userModel");
+const bcrypt = require("bcrypt");
 const generateToken = require("../utils/generateToken.js");
 
 const signup = async (req, res) => {
-  const { email, password, role } = req.body;
-  const userMail = await User.findOne({ email });
+  const { name, email, password, role } = req.body;
+  try {
+    const userMail = await User.findOne({ email });
 
-  if (!userMail) {
-    return res.status(400).json({ message: "User already exists" });
+    if (userMail) {
+      return res.status(400).json({ message: "User already exists" });
+    }
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ name, email, password: hashedPassword, role });
+    await newUser.save();
+    const token = generateToken({ email, role });
+    return res
+      .status(201)
+      .json({ message: "user registerd Successfully", accessToken: token });
+  } catch (error) {
+    console.log(error.message);
+    return res.status(500).json({ message: error.message });
   }
-
-  const hashedPassword = await bcrypt.hash(password, 10);
-  const newUser = new User({ email, password: hashedPassword, role });
-  await newUser.save();
-  const token = generateToken({ email, role });
-  return res
-    .status(201)
-    .json({ message: "user registerd Successfully", accessToken: token });
 };
 
 const signin = async (req, res) => {
-  const { email, role, password } = req.body;
-  const user = await userModel.find({ email: email });
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
   if (!user) {
     return res.status(404).json({
       message: "user not found",
     });
   }
-  if (!(await bcrypt.compare(password, user.password))) {
-    return res.status.json({
+  const isValidPassword = await bcrypt.compare(password, user.password);
+  if (!isValidPassword) {
+    return res.status(400).json({
       message: "Invalid Credientials",
     });
   }
-
-  
-
+  const token = generateToken({ email: user.email, role: user.role });
   return res
     .status(200)
     .json({ message: "user logged Successfully", accessToken: token });
 };
 
-module.exports = { signup };
+module.exports = { signup, signin };

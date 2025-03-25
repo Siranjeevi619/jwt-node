@@ -2,7 +2,6 @@ import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import SignInPage from "../page/SignInPage/SignInPage";
-// import Home from "../page/Home/HomePage";
 import LoginPage from "../page/LoginPage/LoginPage";
 import NavbarComponent from "../component/Navbar";
 import HomePage from "../page/Home/HomePage";

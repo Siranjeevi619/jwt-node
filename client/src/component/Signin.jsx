@@ -1,21 +1,24 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import axios from "axios";
 import { Form, Button, Container, Card, Alert } from "react-bootstrap";
+import { UserContext } from "../context/UserAuth";
 
 const SignUp = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState(null);
   const [access, setAccess] = useState("user");
   const [success, setSuccess] = useState(null);
+  const { signup } = useContext(UserContext);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
     setSuccess(null);
 
-    if (!email || !password || !confirmPassword) {
+    if (!name || !email || !password || !confirmPassword) {
       setError("Please fill in all fields");
       return;
     }
@@ -23,7 +26,7 @@ const SignUp = () => {
       setError("Passwords do not match");
       return;
     }
-    const data = { email, access, password };
+    const data = { name, email, access, password };
 
     try {
       const response = await axios.post(
@@ -35,8 +38,10 @@ const SignUp = () => {
       console.log("Signup Response:", response.data);
 
       setEmail("");
+      setName("");
       setPassword("");
       setConfirmPassword("");
+      signup(response.data.user);
     } catch (err) {
       console.error("Signup Error:", err);
       setError(err.response?.data?.message || "Signup failed");
@@ -55,6 +60,15 @@ const SignUp = () => {
           {error && <Alert variant="danger">{error}</Alert>}
           {success && <Alert variant="success">{success}</Alert>}
           <Form onSubmit={handleSubmit}>
+            <Form.Group controlId="formBasicName" className="mb-3">
+              <Form.Label>Name</Form.Label>
+              <Form.Control
+                type="text"
+                placeholder="Enter name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </Form.Group>
             <Form.Group controlId="formBasicEmail" className="mb-3">
               <Form.Label>Email address</Form.Label>
               <Form.Control
